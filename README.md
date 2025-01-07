@@ -1,2 +1,2 @@
-# egov-java-template
-template
+# Scaler Academy - DIGIT Boilerplate Code
+TBD
