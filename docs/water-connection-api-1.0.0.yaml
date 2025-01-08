@@ -1,0 +1,364 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0
+  title: Water Services Management Specification
+  description: | 
+   API specifications to apply for a new water connection, update an existing connection and search for connections.
+  contact: 
+    name: Scaler Academy
+    email: x@scaleracademy.org
+servers:
+  - url: /
+tags:
+  - name: Water Services
+    description: Water services management APIs
+paths:
+  /water-services/connection/v1/_create:
+    post:
+      tags:
+        - Water Services
+      summary: Apply for new water connection against a property
+      operationId: createWaterConnection
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WaterConnectionCreateRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WaterConnectionResponse'
+        '400':
+          description: Bad Request. Validation failed for the request payload.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized. Authentication failed.
+        '403':
+          description: Forbidden. Access denied.
+        '404':
+          description: Resource not found.
+
+  /water-services/connection/v1/_search:
+    get:
+      tags:
+        - Water Services
+      summary: Get the list of existing Water connections
+      operationId: searchWaterConnections
+      parameters:
+        - name: connectionNo
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Connection number to filter results.
+        - name: applicationNo
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          description: List of application numbers to filter results.
+        - name: applicationStatus
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          description: Filter connections by application status.
+        - name: ids
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          description: Filter connections by IDs.
+        - name: tenantId
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Tenant ID to filter connections.
+      responses:
+        '200':
+          description: OK. Successfully retrieved connections.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WaterConnectionResponse'
+        '400':
+          description: Bad Request. Invalid parameters.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized. Authentication failed.
+        '403':
+          description: Forbidden. Access denied.
+        '404':
+          description: Resource not found.
+
+  /water-services/connection/v1/_update:
+    post:
+      tags:
+        - Water Services
+      summary: Update existing Water connection details
+      operationId: updateWaterConnection
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WaterConnectionUpdateRequest'
+      responses:
+        '200':
+          description: OK. Successfully updated the connection.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WaterConnectionResponse'
+        '400':
+          description: Bad Request. Validation failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized. Authentication failed.
+        '403':
+          description: Forbidden. Access denied.
+        '404':
+          description: Resource not found.
+
+  /water-services/connection/workflow/v1/_update:
+    post:
+      tags:
+        - Water Services
+      summary: Update only the workflow for a given application
+      operationId: updateWaterConnectionWorkflow
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WaterConnectionWorkflowUpdateRequest'
+      responses:
+        '200':
+          description: OK. Successfully updated the workflow.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WaterConnectionResponse'
+        '400':
+          description: Bad Request. Validation failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized. Authentication failed.
+        '403':
+          description: Forbidden. Access denied.
+        '404':
+          description: Resource not found.
+
+components:
+  schemas:
+    ConnectionTypeMasterData:
+      type: array
+      description: Module name is "water-services". Master name is "ConnectionTypes". Each entry in this array will have a schema as defined below. Please generate the JSON schema for that structure and create the masters.
+      items:
+        $ref: '#/components/schemas/ConnectionType'
+    
+    ChannelTypeMasterData:
+      type: array
+      description: Module name is "water-services". Master name is "ConnectionTypes". Each entry in this array will have a schema as defined below. Please generate the JSON schema for that structure and create the masters.
+      items:
+        $ref: '#/components/schemas/ChannelType'
+        
+    ConnectionType:
+      type: object
+      description: Structure for connection type master
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: System generated identifier for the master data. Will be generated by the MDMS service.
+          readOnly: true
+        connectionTypeCode:
+          type: string
+          description: These are user defined constants that will be used by the frontend and backend services to reference this entry.
+          enum:
+            - RESIDENTIAL
+            - COMMERCIAL
+          example: "RESIDENTIAL"
+        displayName:
+          type: string
+          description: The display name for this connection type to be used in the UI and other places. Use capital case, human readable strings.
+          example: "Residential"
+        isActive:
+          description: Defines whether the entry is valid or not.
+          type: boolean
+          default: true
+    
+    ChannelType:
+      type: object
+      description: Structure for the channel type master
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: System generated identifier for the master data. Will be generated by the MDMS service.
+          readOnly: true
+        channelCode:
+          type: string
+          description: These are user defined constants that will be used by the frontend and backend services to reference this entry. 
+        displayName:
+          type: string
+          description: The display name for this channel type to be used in the UI and other places. Use capital case, human readable strings.
+          example: "Online channel, Service Counter"
+        isActive:
+          description: Defines whether the entry is valid or not.
+          type: boolean
+          default: true
+  
+    WaterConnection:
+      title: WaterConnection
+      required:
+        - tenantId
+        - connectionType
+      type: object
+      properties:
+        id:
+          maxLength: 64
+          minLength: 1
+          type: string
+          description: Unique Identifier of the connection for internal reference. Auto-generated in the service.
+          readOnly: true
+        tenantId:
+          maxLength: 64
+          minLength: 2
+          type: string
+          description: Tenant ID to which this connection belongs.
+        applicationNo:
+          maxLength: 64
+          minLength: 1
+          type: string
+          description: Formatted application number, which will be generated using ID-Gen at the time when an application is created in the system.
+          readOnly: true
+        applicationStatus:
+          type: string
+          description: The workflow status string captured and stored here for easy reference.
+          readOnly: true
+        auditDetails:
+          $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-Specs/common-contract-update/Common%20Services/common-contract.yaml#/components/schemas/AuditDetails'
+        channel:
+          type: string
+          description: Refer to channel type master data codes. These will need to be verified against the MDMS service for validity
+        connectionExecutionDate:
+          type: integer
+          description: Date when the connection is due to be executed.
+          format: int64
+          readOnly: true
+        connectionHolders:
+          type: array
+          description: User ids of citizens from the user registry. A user who is applying for water connection should be created in the user registry first before he/she is allowed to apply for a connection.
+          items:
+            type: string
+        connectionNo:
+          maxLength: 64
+          minLength: 1
+          type: string
+          description: Formatted connection number, which will be generated using ID-Gen service after aproval of connection application in case of new application. IDGen format will be configured in the master data or in the application.properties file
+          readOnly: true
+        connectionType:
+          maxLength: 32
+          minLength: 2
+          type: string
+          description: This is the connection type code as defined in the ConnectionType schema
+        workflow:
+          $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-Specs/common-contract-update/Common%20Services/common-contract.yaml#/components/schemas/Workflow'
+        propertyId:
+          type: string
+          description: UUID of the property from the property registry. This will be passed into the service as input. Can be validated against property service if required
+        status:
+          type: boolean
+          description: Whether this entry is active or not. Default is true.
+        additionalDetails:
+          type: object
+          description: Json object to capture any extra information which is not accommodated of model
+        documents:
+          type: array
+          description: The documents attached by owner for exemption.
+          items:
+            $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-Specs/common-contract-update/Common%20Services/common-contract.yaml#/components/schemas/Document'
+    
+    WaterConnectionCreateRequest:
+      title: Create Request
+      type: object
+      properties:
+        RequestInfo:
+          $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-Specs/common-contract-update/Common%20Services/common-contract.yaml#/components/schemas/RequestInfo'
+        WaterConnection:
+          $ref: '#/components/schemas/WaterConnection'
+      required:
+        - RequestInfo
+        - WaterConnection
+      description: Contract class to receive request. Array of Property items  are used in case of create . Where as single Property item is used for update
+      
+    
+    WaterConnectionUpdateRequest:
+      type: object
+      properties:
+        RequestInfo:
+          $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-Specs/common-contract-update/Common%20Services/common-contract.yaml#/components/schemas/RequestInfo'
+        id:
+          type: string
+          description: The id of the connection that needs to be updated
+        connectionType:
+          type: string
+          description: Updated connection type value for above id
+        additionalDetails:
+          type: object
+          description: Replaces the additional details object in the existing entity
+        status:
+          type: boolean
+          description: Marks a field as active or inactive
+        propertyId:
+          type: string
+          description: Updated property ID against which this connection is applied for
+      required:
+        - id
+    
+    WaterConnectionWorkflowUpdateRequest:
+      type: object
+      properties:
+        RequestInfo:
+          $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-Specs/common-contract-update/Common%20Services/common-contract.yaml#/components/schemas/RequestInfo'
+        workflow:
+          $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-Specs/common-contract-update/Common%20Services/common-contract.yaml#/components/schemas/Workflow'
+      required:
+        - RequestInfo
+        - workflow
+        
+    WaterConnectionResponse:
+      title: WaterConnectionResponse
+      type: object
+      properties:
+        ResponseInfo:
+          $ref: 'https://raw.githubusercontent.com/egovernments/DIGIT-Specs/common-contract-update/Common%20Services/common-contract.yaml#/components/schemas/ResponseInfo'
+        WaterConnection:
+          type: array
+          items:
+            $ref: '#/components/schemas/WaterConnection'
+      description: Contains the ResponseHeader and the created/updated property
