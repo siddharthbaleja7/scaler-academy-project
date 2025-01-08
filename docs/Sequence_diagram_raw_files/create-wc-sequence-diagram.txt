@@ -1,0 +1,23 @@
+@startuml
+title "Sequence diagram for the Water Connection backend service"
+participant UI as UI
+participant WaterConnSvc as WC
+UI -> WC: Call _create API with payload
+WC -> MDMS++: Fetch master data using \n module name & master name
+return master data
+WC -> WC: Validate if master data passed in the payload is valid or not
+WC -> User++: Call search API to fetch connectionOwner user IDs
+return data
+WC -> WC: Check if connection owner userIDs are valid or not (array empty or not)
+WC -> IDGen++: Fetch ID for application
+return id
+WC -> WC: Enrich payload with ID
+WC -> Workflow++: Activate workflow for application \n (based on what's passed in from UI)
+return workflow
+WC -> WC: Add workflow status as application status in the payload JSON
+WC -> Kafka: Push payload to Kafka
+WC -> UI: Return the response as 201 created
+Persister -> Kafka: Pull data from topic
+Persister -> Persister: Use config file to map payload to tables
+Persister -> PostgreSQL: Persist data in tables
+@enduml

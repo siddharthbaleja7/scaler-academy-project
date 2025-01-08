@@ -1,0 +1,26 @@
+@startuml
+title "Sequence diagram for the Workflow Update API of \n the Water Connection backend service"
+autonumber
+participant UI as UI
+boundary WaterConnSvc as WC
+boundary Workflow
+queue Kafka
+participant Persister
+database PostgreSQL
+UI -> WC: Call workflow _update API with payload
+WC -> PostgreSQL++: Fetch existing data for ID
+return data
+WC -> WC: Verify if water connection ID passed in payload exists
+alt ID does not exist
+WC -> UI: 400 ID does not exist
+else ID is valid
+WC -> Workflow++: Update workflow
+return workflow
+WC -> WC: Update application status in WC payload
+WC -> Kafka: Push updated payload to Kafka
+WC -> UI: Return the response as 200 OK
+end
+Persister -> Kafka: Pull data from topic
+Persister -> Persister: Use update configuration to map\n payload to tables
+Persister -> PostgreSQL: Persist data in tables
+@enduml
