@@ -1,0 +1,28 @@
+@startuml
+title "Sequence diagram for the Update API of \n the Water Connection backend service"
+autonumber
+participant UI as UI
+boundary WaterConnSvc as WC
+boundary MDMS as MDMS
+boundary User as User
+queue Kafka
+participant Persister
+database PostgreSQL
+UI -> WC: Call _update API with payload
+WC -> WC: Verify if ID passed in payload exists
+WC -> PostgreSQL++: Fetch existing data for ID
+return data
+alt ID does not exist
+WC -> UI: 400 ID does not exist
+else ID is valid
+WC -> MDMS++: Fetch master data for connection type using \n module name & master name
+return master data
+WC -> WC: Validate if connection type passed in payload is valid or not
+WC -> WC: Update only fields that are updatable \n(as spec-ed in API) in the JSON payload. Retain others as-is.
+WC -> Kafka: Push updated payload to Kafka
+WC -> UI: Return the response as 200 OK
+end
+Persister -> Kafka: Pull data from topic
+Persister -> Persister: Use update configuration to map\n payload to tables
+Persister -> PostgreSQL: Persist data in tables
+@enduml
