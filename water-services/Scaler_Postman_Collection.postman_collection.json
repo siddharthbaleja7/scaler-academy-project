@@ -1,0 +1,279 @@
+{
+	"info": {
+		"_postman_id": "827a65ba-acfa-46c6-a65c-ca09d44d2be2",
+		"name": "Scaler Postman Collection",
+		"description": "This collection enables users to login to the eGov's unified-dev environment and perform basic MDMS search for certain master/module names. In addition, dummy APIs have been provided to test out the sample water connection create/update APIs.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21974110",
+		"_collection_link": "https://galactic-astronaut-611221.postman.co/workspace/DRISTI~39542ca0-bec5-41e9-ac29-599d09f7ec5c/collection/21974110-827a65ba-acfa-46c6-a65c-ca09d44d2be2?action=share&source=collection_link&creator=21974110"
+	},
+	"item": [
+		{
+			"name": "Scaler Student Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(pm.response.text());",
+							"pm.environment.set(\"authToken\",jsonData.access_token);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic ZWdvdi11c2VyLWNsaWVudDo="
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "read",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "Scaler_Student4",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Scaler@123",
+							"type": "text"
+						},
+						{
+							"key": "tenantId",
+							"value": "dev",
+							"type": "text"
+						},
+						{
+							"key": "userType",
+							"value": "EMPLOYEE",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://{{server}}/user/oauth/token",
+					"protocol": "https",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"user",
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Scaler Student3 Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(pm.response.text());",
+							"pm.environment.set(\"authToken\",jsonData.access_token);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic ZWdvdi11c2VyLWNsaWVudDo="
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "read",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "Scaler_Student3",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Scaler@123",
+							"type": "text"
+						},
+						{
+							"key": "tenantId",
+							"value": "dev",
+							"type": "text"
+						},
+						{
+							"key": "userType",
+							"value": "EMPLOYEE",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://{{server}}/user/oauth/token",
+					"protocol": "https",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"user",
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MDMS Search",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"RequestInfo\": {\n        \"apiId\": \"asset-services\",\n        \"ver\": null,\n        \"ts\": null,\n        \"action\": null,\n        \"did\": null,\n        \"key\": null,\n        \"msgId\": \"search with from and to values\",\n        \"authToken\": \"02fbba04-8898-4274-9500-44c8b9adc6e4\",\n        \"correlationId\": null\n    },\n    \"MdmsCriteria\": {\n        \"tenantId\": \"dev\",\n        \"moduleDetails\": [\n            {\n                \"moduleName\": \"common-masters\",\n                \"masterDetails\": [\n                    {\n                        \"name\": \"IdFormat\"\n                    }\n                ]\n            },\n            {\n                \"moduleName\": \"tenant\",\n                \"masterDetails\": [\n                    {\n                        \"name\": \"tenants\"\n                    },\n                    {\n                        \"name\": \"citymodule\"\n                    },\n                    {\n                        \"name\": \"cities\"\n                    }\n                ]\n            },\n            {\n                \"moduleName\": \"DIGIT-UI\",\n                \"masterDetails\": [\n                    {\n                        \"name\": \"ApiCachingSettings\"\n                    }\n                ]\n            }\n        ]\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{server}}/egov-mdms-service/v1/_search",
+					"protocol": "https",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"egov-mdms-service",
+						"v1",
+						"_search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Water Connection Create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"RequestInfo\": {\n\n    },\n    \"WaterConnection\" : {\n        \"tenantId\" : \"ka\",\n        \"connectionType\" : \"RESIDENTIAL\",\n        \"status\": \"true\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/water_services/connection/v1/_create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"water_services",
+						"connection",
+						"v1",
+						"_create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Water Connection Update",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"RequestInfo\": {\n\n    },\n    \"WaterConnection\" : {\n        \"tenantId\" : \"ka\",\n        \"connectionType\" : \"RESIDENTIAL\",\n        \"status\": \"true\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/water_services/connection/v1/_search?tenantId=ka",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"water_services",
+						"connection",
+						"v1",
+						"_search"
+					],
+					"query": [
+						{
+							"key": "tenantId",
+							"value": "ka"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
