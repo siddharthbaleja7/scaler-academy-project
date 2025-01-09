@@ -274,6 +274,84 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Create Workflow",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "User-Agent",
+						"value": "insomnia/2023.5.8"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"RequestInfo\": {\n        \"apiId\": null,\n        \"ver\": null,\n        \"ts\": null,\n        \"action\": \"POST\",\n        \"did\": null,\n        \"key\": null,\n        \"msgId\": \"5bfa85e7-dfa1-47c8-98b2-747bf552be86\",\n        \"authToken\": \"{{authToken}}\"\n    },\n  \"BusinessServices\": [\n    {\n      \"tenantId\": \"mz\",\n      \"businessService\": \"water-connection\",\n      \"business\": \"water-services-management\",\n      \"businessServiceSla\": 30,\n      \"states\": [\n        {\n          \"sla\": null,\n          \"state\": null,\n          \"applicationStatus\": null,\n          \"docUploadRequired\": true,\n          \"isStartState\": true,\n          \"isTerminateState\": false,\n          \"isStateUpdatable\": true,\n          \"actions\": [\n            {\n              \"action\": \"SUBMIT\",\n              \"nextState\": \"PENDINGAPPROVAL\",\n              \"roles\": [\n                \"CITIZEN\",\n                \"EMPLOYEE\"\n              ]\n            }\n          ]\n        },\n        {\n          \"sla\": null,\n          \"state\": \"PENDINGAPPROVAL\",\n          \"applicationStatus\": \"INWORKFLOW\",\n          \"docUploadRequired\": false,\n          \"isStartState\": false,\n          \"isTerminateState\": false,\n          \"isStateUpdatable\": true,\n          \"actions\": [\n            {\n              \"action\": \"APPROVE\",\n              \"nextState\": \"APPROVED\",\n              \"roles\": [\n                \"EMPLOYEE\"\n              ]\n            },\n            {\n              \"action\": \"REJECT\",\n              \"nextState\": \"REJECTED\",\n              \"roles\": [\n                \"EMPLOYEE\"\n              ]\n            }\n          ]\n        },\n        {\n          \"sla\": 5,\n          \"state\": \"APPROVED\",\n          \"applicationStatus\": \"ACTIVE\",\n          \"isStateUpdatable\": false,\n          \"docUploadRequired\": false,\n          \"isStartState\": false,\n          \"isTerminateState\": true\n        },\n        {\n          \"sla\": 5,\n          \"state\": \"REJECTED\",\n          \"applicationStatus\": \"INACTIVE\",\n          \"isStateUpdatable\": false,\n          \"docUploadRequired\": false,\n          \"isStartState\": false,\n          \"isTerminateState\": true\n        }\n      ]\n    }\n  ]\n}"
+				},
+				"url": {
+					"raw": "https://{{server}}/egov-workflow-v2/egov-wf/businessservice/_create",
+					"protocol": "https",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"egov-workflow-v2",
+						"egov-wf",
+						"businessservice",
+						"_create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Workflow",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "User-Agent",
+						"value": "insomnia/2023.5.8"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"RequestInfo\": {\n    \"apiId\": \"Rainmaker\",\n    \"action\": \"\",\n    \"did\": 1,\n    \"key\": \"\",\n    \"msgId\": \"20170310130900|en_IN\",\n    \"requesterId\": \"\",\n    \"ts\": 1513579888683,\n    \"ver\": \".01\",\n    \"authToken\": {{authToken}}\n  }\n}"
+				},
+				"url": {
+					"raw": "https://{{server}}/egov-workflow-v2/egov-wf/businessservice/_search?tenantId=mz&businessServices=water-connection",
+					"protocol": "https",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"egov-workflow-v2",
+						"egov-wf",
+						"businessservice",
+						"_search"
+					],
+					"query": [
+						{
+							"key": "tenantId",
+							"value": "mz"
+						},
+						{
+							"key": "businessServices",
+							"value": "water-connection"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
