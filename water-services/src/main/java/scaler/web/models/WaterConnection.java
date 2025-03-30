@@ -1,115 +1,231 @@
 package scaler.web.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import org.egov.common.contract.models.AuditDetails;
-import org.egov.common.contract.models.Document;
-import org.egov.common.contract.models.Workflow;
-import org.springframework.validation.annotation.Validated;
-
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.validation.annotation.Validated;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Data;
+import lombok.Builder;
 
 /**
- * WaterConnection
+ * This is lightweight property object that can be used as reference by definitions needing property linking. Actual Property Object extends this to include more elaborate attributes of the property.
  */
+@Schema(description = "This is lightweight property object that can be used as reference by definitions needing property linking. Actual Property Object extends this to include more elaborate attributes of the property.")
 @Validated
-@jakarta.annotation.Generated(value = "org.egov.codegen.SpringBootCodegen", date = "2025-01-07T15:17:21.586197+05:30[Asia/Kolkata]")
+@jakarta.annotation.Generated(value = "org.egov.codegen.SpringBootCodegen", date = "2025-02-14T01:43:59.216850188+05:30[Asia/Calcutta]")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class WaterConnection {
-    @JsonProperty("id")
+public class WaterConnection   {
+        @JsonProperty("additionalDetails")
 
-    @Size(min = 1, max = 64)
-    private String id = null;
+                private Object additionalDetails = null;
 
-    @JsonProperty("tenantId")
-    @NotNull
+        @JsonProperty("applicationNo")
 
-    @Size(min = 2, max = 64)
-    private String tenantId = null;
+        @Size(min=1,max=64)         private String applicationNo = null;
 
-    @JsonProperty("applicationNo")
+        @JsonProperty("applicationStatus")
 
-    @Size(min = 1, max = 64)
-    private String applicationNo = null;
+                private String applicationStatus = null;
 
-    @JsonProperty("applicationStatus")
+        @JsonProperty("applicationType")
 
-    private String applicationStatus = null;
+                private String applicationType = null;
 
-    @JsonProperty("auditDetails")
+        @JsonProperty("auditDetails")
 
-    @Valid
-    private AuditDetails auditDetails = null;
+          @Valid
+                private AuditDetails auditDetails = null;
 
-    @JsonProperty("channel")
+        @JsonProperty("channel")
 
-    private String channel = null;
+                private String channel = null;
 
-    @JsonProperty("connectionExecutionDate")
+        @JsonProperty("connectionCategory")
+          @NotNull
 
-    private Long connectionExecutionDate = null;
+        @Size(min=2,max=32)         private String connectionCategory = null;
 
-    @JsonProperty("connectionHolders")
+        @JsonProperty("connectionExecutionDate")
 
-    private List<String> connectionHolders = null;
+                private Long connectionExecutionDate = null;
 
-    @JsonProperty("connectionNo")
+        @JsonProperty("connectionHolders")
+          @Valid
+                private List<OwnerInfo> connectionHolders = null;
 
-    @Size(min = 1, max = 64)
-    private String connectionNo = null;
+        @JsonProperty("connectionNo")
 
-    @JsonProperty("connectionType")
-    @NotNull
+        @Size(min=1,max=64)         private String connectionNo = null;
 
-    @Size(min = 2, max = 32)
-    private String connectionType = null;
+        @JsonProperty("connectionType")
+          @NotNull
 
-    @JsonProperty("workflow")
+        @Size(min=2,max=32)         private String connectionType = null;
 
-    @Valid
-    private Workflow workflow = null;
+        @JsonProperty("dateEffectiveFrom")
 
-    @JsonProperty("propertyId")
+                private Long dateEffectiveFrom = null;
 
-    private String propertyId = null;
+        @JsonProperty("disconnectionExecutionDate")
 
-    @JsonProperty("status")
+                private Long disconnectionExecutionDate = null;
 
-    private Boolean status = null;
+        @JsonProperty("disconnectionReason")
 
-    @JsonProperty("additionalDetails")
+                private String disconnectionReason = null;
 
-    private Object additionalDetails = null;
+        @JsonProperty("documents")
+          @Valid
+                private List<Document> documents = null;
 
-    @JsonProperty("documents")
-    @Valid
-    private List<Document> documents = null;
+        @JsonProperty("id")
+
+        @Size(min=1,max=64)         private String id = null;
+
+        @JsonProperty("isDisconnectionTemporary")
+
+                private Boolean isDisconnectionTemporary = null;
+
+        @JsonProperty("meterId")
+
+                private String meterId = null;
+
+        @JsonProperty("meterInstallationDate")
+
+                private Long meterInstallationDate = null;
+
+        @JsonProperty("noOfTaps")
+
+                private Integer noOfTaps = null;
+
+        @JsonProperty("oldApplication")
+
+                private Boolean oldApplication = null;
+
+        @JsonProperty("oldConnectionNo")
+
+        @Size(min=1,max=64)         private String oldConnectionNo = null;
+
+        @JsonProperty("pipeSize")
+
+                private Double pipeSize = null;
+
+        @JsonProperty("plumberInfo")
+          @Valid
+                private List<PlumberInfo> plumberInfo = null;
+
+        @JsonProperty("processInstance")
+
+          @Valid
+                private ProcessInstance processInstance = null;
+
+        @JsonProperty("propertyId")
+
+                private String propertyId = null;
+
+        @JsonProperty("proposedPipeSize")
+
+                private Double proposedPipeSize = null;
+
+        @JsonProperty("proposedTaps")
+
+                private Integer proposedTaps = null;
+
+        @JsonProperty("roadCuttingArea")
+
+                private Float roadCuttingArea = null;
+
+        @JsonProperty("roadCuttingInfo")
+          @Valid
+                private List<RoadCuttingInfo> roadCuttingInfo = null;
+
+        @JsonProperty("roadType")
+
+        @Size(min=2,max=32)         private String roadType = null;
+
+            /**
+            * Gets or Sets status
+            */
+            public enum StatusEnum {
+                        ACTIVE("Active"),
+
+                        INACTIVE("Inactive");
+
+            private String value;
+
+            StatusEnum(String value) {
+            this.value = value;
+            }
+
+            @Override
+            @JsonValue
+            public String toString() {
+            return String.valueOf(value);
+            }
+
+            @JsonCreator
+            public static StatusEnum fromValue(String text) {
+            for (StatusEnum b : StatusEnum.values()) {
+            if (String.valueOf(b.value).equals(text)) {
+            return b;
+            }
+            }
+            return null;
+            }
+            }        @JsonProperty("status")
+
+                private StatusEnum status = null;
+
+        @JsonProperty("tenantId")
+
+        @Size(min=2,max=256)         private String tenantId = null;
+
+        @JsonProperty("waterSource")
+
+                private String waterSource = null;
 
 
-    public WaterConnection addConnectionHoldersItem(String connectionHoldersItem) {
-        if (this.connectionHolders == null) {
+        public WaterConnection addConnectionHoldersItem(OwnerInfo connectionHoldersItem) {
+            if (this.connectionHolders == null) {
             this.connectionHolders = new ArrayList<>();
-        }
+            }
         this.connectionHolders.add(connectionHoldersItem);
         return this;
-    }
-
-    public WaterConnection addDocumentsItem(Document documentsItem) {
-        if (this.documents == null) {
-            this.documents = new ArrayList<>();
         }
+
+        public WaterConnection addDocumentsItem(Document documentsItem) {
+            if (this.documents == null) {
+            this.documents = new ArrayList<>();
+            }
         this.documents.add(documentsItem);
         return this;
-    }
+        }
+
+        public WaterConnection addPlumberInfoItem(PlumberInfo plumberInfoItem) {
+            if (this.plumberInfo == null) {
+            this.plumberInfo = new ArrayList<>();
+            }
+        this.plumberInfo.add(plumberInfoItem);
+        return this;
+        }
+
+        public WaterConnection addRoadCuttingInfoItem(RoadCuttingInfo roadCuttingInfoItem) {
+            if (this.roadCuttingInfo == null) {
+            this.roadCuttingInfo = new ArrayList<>();
+            }
+        this.roadCuttingInfo.add(roadCuttingInfoItem);
+        return this;
+        }
 
 }

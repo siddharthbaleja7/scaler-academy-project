@@ -1,20 +1,25 @@
 package scaler.util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
-import net.minidev.json.JSONArray;
-import org.egov.common.contract.request.RequestInfo;
-import org.egov.mdms.model.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
-import scaler.config.Configuration;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.egov.common.contract.request.RequestInfo;
+import org.egov.mdms.model.MasterDetail;
+import org.egov.mdms.model.MdmsCriteria;
+import org.egov.mdms.model.MdmsCriteriaReq;
+import org.egov.mdms.model.MdmsResponse;
+import org.egov.mdms.model.ModuleDetail;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.extern.slf4j.Slf4j;
+import net.minidev.json.JSONArray;
+import scaler.config.Configuration;
 import static scaler.config.ServiceConstants.ERROR_WHILE_FETCHING_FROM_MDMS;
 
 @Slf4j
@@ -31,8 +36,10 @@ public class MdmsUtil {
     private Configuration configs;
 
 
+
+
     public Map<String, Map<String, JSONArray>> fetchMdmsData(RequestInfo requestInfo, String tenantId, String moduleName,
-                                                             List<String> masterNameList) {
+                                                                                List<String> masterNameList) {
         StringBuilder uri = new StringBuilder();
         uri.append(configs.getMdmsHost()).append(configs.getMdmsEndPoint());
         MdmsCriteriaReq mdmsCriteriaReq = getMdmsRequest(requestInfo, tenantId, moduleName, masterNameList);
@@ -42,8 +49,8 @@ public class MdmsUtil {
         try {
             response = restTemplate.postForObject(uri.toString(), mdmsCriteriaReq, Map.class);
             mdmsResponse = mapper.convertValue(response, MdmsResponse.class);
-        } catch (Exception e) {
-            log.error(ERROR_WHILE_FETCHING_FROM_MDMS, e);
+        }catch(Exception e) {
+            log.error(ERROR_WHILE_FETCHING_FROM_MDMS,e);
         }
 
         return mdmsResponse.getMdmsRes();
@@ -53,7 +60,7 @@ public class MdmsUtil {
     private MdmsCriteriaReq getMdmsRequest(RequestInfo requestInfo, String tenantId,
                                            String moduleName, List<String> masterNameList) {
         List<MasterDetail> masterDetailList = new ArrayList<>();
-        for (String masterName : masterNameList) {
+        for(String masterName: masterNameList) {
             MasterDetail masterDetail = new MasterDetail();
             masterDetail.setName(masterName);
             masterDetailList.add(masterDetail);

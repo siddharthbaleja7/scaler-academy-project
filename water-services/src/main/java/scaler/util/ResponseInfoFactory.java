@@ -4,7 +4,9 @@ import org.egov.common.contract.request.RequestInfo;
 import org.egov.common.contract.response.ResponseInfo;
 import org.springframework.stereotype.Component;
 
-import static scaler.config.ServiceConstants.*;
+import static scaler.config.ServiceConstants.FAILED;
+import static scaler.config.ServiceConstants.RES_MSG_ID;
+import static scaler.config.ServiceConstants.SUCCESSFUL;
 
 @Component
 public class ResponseInfoFactory {
@@ -14,7 +16,7 @@ public class ResponseInfoFactory {
         final String apiId = requestInfo != null ? requestInfo.getApiId() : "";
         final String ver = requestInfo != null ? requestInfo.getVer() : "";
         Long ts = null;
-        if (requestInfo != null)
+        if(requestInfo!=null)
             ts = requestInfo.getTs();
         final String resMsgId = RES_MSG_ID; // FIXME : Hard-coded
         final String msgId = requestInfo != null ? requestInfo.getMsgId() : "";

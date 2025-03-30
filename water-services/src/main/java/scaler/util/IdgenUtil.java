@@ -1,6 +1,9 @@
 package scaler.util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.egov.common.contract.idgen.IdGenerationRequest;
 import org.egov.common.contract.idgen.IdGenerationResponse;
 import org.egov.common.contract.idgen.IdRequest;
@@ -10,15 +13,13 @@ import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import scaler.config.Configuration;
-import scaler.repository.ServiceRequestRepository;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import static scaler.config.ServiceConstants.IDGEN_ERROR;
 import static scaler.config.ServiceConstants.NO_IDS_FOUND_ERROR;
+import scaler.repository.ServiceRequestRepository;
 
 @Component
 public class IdgenUtil {
